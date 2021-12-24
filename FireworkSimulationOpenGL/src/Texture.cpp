@@ -1,7 +1,8 @@
 #include "Texture.h"
 #include "Renderer.h"
+#include "stb_image/stb_image.h"
 
-#include "vendor/stb_image/stb_image.h"
+#include <iostream>
 
 Texture::Texture(const std::string& path)
 	: m_RendererID(0), m_FilePath(path), m_LocalBuffer(nullptr),
@@ -11,7 +12,7 @@ Texture::Texture(const std::string& path)
 	m_LocalBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BPP, 4);
 
 	if (!m_LocalBuffer)
-		GLWarning(path.c_str(), WarningType::NOT_FOUND);
+		std::cout << "Warning: Texture '" << path << "' doesn't exist!" << std::endl;
 
 	GLCall(glGenTextures(1, &m_RendererID));
 	GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID));
